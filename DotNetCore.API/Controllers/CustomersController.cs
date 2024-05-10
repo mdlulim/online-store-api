@@ -1,0 +1,17 @@
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace DotNetCore.API.Controllers
+{
+    //https://localhost:portnumber/api/customers
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CustomersController : ControllerBase
+    {
+        [HttpGet]
+        public IActionResult GetCustomers()
+        {
+            return Ok( "mdu");
+        }
+    }
+}

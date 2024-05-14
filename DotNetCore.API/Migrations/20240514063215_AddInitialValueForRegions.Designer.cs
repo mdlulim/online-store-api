@@ -4,6 +4,7 @@ using DotNetCore.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotNetCore.API.Migrations
 {
     [DbContext(typeof(OnlineStoreDbContext))]
-    partial class OnlineStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240514063215_AddInitialValueForRegions")]
+    partial class AddInitialValueForRegions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,84 +118,84 @@ namespace DotNetCore.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("abf169d4-1b6c-4df8-9340-6e1d909d037e"),
+                            Id = new Guid("10045b8d-eab8-443a-9a00-a89cea107ceb"),
                             Code = "GP",
-                            CreatedDate = new DateTime(2024, 5, 14, 6, 41, 46, 898, DateTimeKind.Utc).AddTicks(5933),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Gauteng Province",
                             Name = "Gauteng",
-                            UpdatedDate = new DateTime(2024, 5, 14, 6, 41, 46, 898, DateTimeKind.Utc).AddTicks(5934)
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("fd618ce5-294e-4a62-bbfb-c43ae0f013c8"),
-                            Code = "GP",
-                            CreatedDate = new DateTime(2024, 5, 14, 6, 41, 46, 898, DateTimeKind.Utc).AddTicks(5936),
+                            Id = new Guid("61651895-cbe3-4374-b78c-27cc43875e10"),
+                            Code = "KZN",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "KwaZulu-Natal",
                             Name = "KwaZulu-Natal",
-                            UpdatedDate = new DateTime(2024, 5, 14, 6, 41, 46, 898, DateTimeKind.Utc).AddTicks(5937)
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("97db5a1f-16b1-4c37-b65c-1b71c42d3c96"),
+                            Id = new Guid("bcfdc662-dd43-4c31-9886-7cfe79403dc0"),
                             Code = "EC",
-                            CreatedDate = new DateTime(2024, 5, 14, 6, 41, 46, 898, DateTimeKind.Utc).AddTicks(5938),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Eastern Cape",
                             Name = "Eastern Cape",
-                            UpdatedDate = new DateTime(2024, 5, 14, 6, 41, 46, 898, DateTimeKind.Utc).AddTicks(5938)
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("1592448c-d360-4923-a215-9a0d3b72ce04"),
+                            Id = new Guid("d6599809-fc21-463c-8e6e-48f0f69d6676"),
                             Code = "FS",
-                            CreatedDate = new DateTime(2024, 5, 14, 6, 41, 46, 898, DateTimeKind.Utc).AddTicks(5939),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Free State",
                             Name = "Free State",
-                            UpdatedDate = new DateTime(2024, 5, 14, 6, 41, 46, 898, DateTimeKind.Utc).AddTicks(5940)
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("73152684-a021-4570-9c65-a25ac464a95f"),
+                            Id = new Guid("14005786-9e8a-40fc-81e7-786a8126c849"),
                             Code = "LP",
-                            CreatedDate = new DateTime(2024, 5, 14, 6, 41, 46, 898, DateTimeKind.Utc).AddTicks(5949),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Limpopo",
                             Name = "Limpopo",
-                            UpdatedDate = new DateTime(2024, 5, 14, 6, 41, 46, 898, DateTimeKind.Utc).AddTicks(5949)
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("6d2d4562-bda8-47c1-99bf-269fe0f4e316"),
+                            Id = new Guid("8288bee7-1bc0-4486-b6dd-0d5314beb8c3"),
                             Code = "MP",
-                            CreatedDate = new DateTime(2024, 5, 14, 6, 41, 46, 898, DateTimeKind.Utc).AddTicks(5951),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Mpumalanga",
                             Name = "Mpumalanga",
-                            UpdatedDate = new DateTime(2024, 5, 14, 6, 41, 46, 898, DateTimeKind.Utc).AddTicks(5951)
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("f812bcff-cf06-4139-8072-ab9337cf46d4"),
+                            Id = new Guid("83b431a4-adb5-47aa-bdbc-5725434e9adc"),
                             Code = "NW",
-                            CreatedDate = new DateTime(2024, 5, 14, 6, 41, 46, 898, DateTimeKind.Utc).AddTicks(5952),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "North West",
                             Name = "North West",
-                            UpdatedDate = new DateTime(2024, 5, 14, 6, 41, 46, 898, DateTimeKind.Utc).AddTicks(5953)
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("34a5804b-2d2d-46d4-a392-88db2c61e74a"),
+                            Id = new Guid("91f159fa-e0fc-405a-b514-eaeb402a3f94"),
                             Code = "NC",
-                            CreatedDate = new DateTime(2024, 5, 14, 6, 41, 46, 898, DateTimeKind.Utc).AddTicks(5954),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Northern Cape",
                             Name = "Northern Cape",
-                            UpdatedDate = new DateTime(2024, 5, 14, 6, 41, 46, 898, DateTimeKind.Utc).AddTicks(5955)
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("fce71014-9759-4fa3-8acb-235a49d10e70"),
+                            Id = new Guid("6184cb87-e003-4d32-b015-fdd5b1c426b8"),
                             Code = "WC",
-                            CreatedDate = new DateTime(2024, 5, 14, 6, 41, 46, 898, DateTimeKind.Utc).AddTicks(5956),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Western Cape",
                             Name = "Western Cape",
-                            UpdatedDate = new DateTime(2024, 5, 14, 6, 41, 46, 898, DateTimeKind.Utc).AddTicks(5956)
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 

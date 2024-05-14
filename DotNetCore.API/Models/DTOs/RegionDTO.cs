@@ -1,6 +1,6 @@
-﻿namespace DotNetCore.API.Models.Domain
+﻿namespace DotNetCore.API.Models.DTOs
 {
-    public class Region
+    public class RegionDTO
     {
         public Guid Id { get; set; }
         public string Code { get; set; }

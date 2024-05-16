@@ -1,8 +1,11 @@
 ﻿using DotNetCore.API.Data;
 using DotNetCore.API.Models.Domain;
 using DotNetCore.API.Models.DTOs;
+using DotNetCore.API.Repositories;
+using DotNetCore.API.Repositories.IRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DotNetCore.API.Controllers
 {
@@ -11,15 +14,17 @@ namespace DotNetCore.API.Controllers
     public class RegionsController : ControllerBase
     {
         private readonly  OnlineStoreDbContext _dbContext;
-        public RegionsController(OnlineStoreDbContext dbContext) 
+        private readonly IUnitOfWork _unitOfWork;
+        public RegionsController(OnlineStoreDbContext dbContext, IUnitOfWork unitOfWork) 
         { 
             _dbContext = dbContext;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
-        public  IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var regionsDomain = _dbContext.Regions.ToList();
+            var regionsDomain = (List<Region>) await _unitOfWork.Region.GetAllAsync();
 
             var regionsDto = new List<RegionDTO>();
             foreach( var regionDomain in regionsDomain)
@@ -40,8 +45,8 @@ namespace DotNetCore.API.Controllers
 
         [HttpGet]
         [Route("{Id:Guid}")]
-        public IActionResult GetById([FromRoute] Guid Id) {
-            var regionDomain = _dbContext.Regions.FirstOrDefault(u => u.Id == Id);
+        public async Task<IActionResult> GetById([FromRoute] Guid Id) {
+            var regionDomain = await _unitOfWork.Region.GetAsync(u => u.Id == Id);
 
             if(regionDomain == null)
             {
@@ -62,7 +67,7 @@ namespace DotNetCore.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] AddRegionRequestDto addRegionRequest)
+        public async Task<IActionResult> Create([FromBody] AddRegionRequestDto addRegionRequest)
         {
             TimeZoneInfo utcZone = TimeZoneInfo.Utc;
             TimeZoneInfo saZone = TimeZoneInfo.FindSystemTimeZoneById("South Africa Standard Time");
@@ -79,8 +84,8 @@ namespace DotNetCore.API.Controllers
                 UpdatedDate = saNow,
             };
 
-            _dbContext.Regions.Add(regionDomain);
-            _dbContext.SaveChanges();
+           await _unitOfWork.Region.AddAsync(regionDomain);
+           _unitOfWork.Save();
 
             var regionDto = new RegionDTO
             {
@@ -96,7 +101,7 @@ namespace DotNetCore.API.Controllers
 
         [HttpPut]
         [Route("{Id:Guid}")]
-        public IActionResult Update([FromRoute] Guid Id, [FromBody] UpdateRegionRequestDto updateRegionRequest)
+        public async Task<IActionResult> Update([FromRoute] Guid Id, [FromBody] UpdateRegionRequestDto updateRegionRequest)
         {
             TimeZoneInfo utcZone = TimeZoneInfo.Utc;
             TimeZoneInfo saZone = TimeZoneInfo.FindSystemTimeZoneById("South Africa Standard Time");
@@ -104,7 +109,7 @@ namespace DotNetCore.API.Controllers
             DateTime utcNow = DateTime.UtcNow;
             DateTime saNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, saZone);
 
-            var regionDomain = _dbContext.Regions.FirstOrDefault(u => u.Id == Id);
+            var regionDomain = await _unitOfWork.Region.GetAsync(u => u.Id == Id);
             if(regionDomain == null)
             {
                 return NotFound();  
@@ -115,8 +120,8 @@ namespace DotNetCore.API.Controllers
             regionDomain.Description = updateRegionRequest.Description;
             regionDomain.UpdatedDate = saNow;
 
-            _dbContext.Regions.Update(regionDomain);
-            _dbContext.SaveChanges();
+            _unitOfWork.Region.Update(regionDomain);
+            _unitOfWork.Save();
 
             var regionDto = new RegionDTO
             {
@@ -132,17 +137,16 @@ namespace DotNetCore.API.Controllers
 
         [HttpDelete]
         [Route("{Id:Guid}")]
-        public IActionResult Delete([FromRoute] Guid Id)
+        public async Task<IActionResult> Delete([FromRoute] Guid Id)
         {
-            var regionDomain = _dbContext.Regions.FirstOrDefault(u => u.Id == Id);
+            var regionDomain = await _unitOfWork.Region.GetAsync(u => u.Id == Id);
             if (regionDomain == null)
             {
                 return NotFound();
             }
 
-            _dbContext.Regions.Remove(regionDomain);
-            _dbContext.SaveChanges();
-
+            await _unitOfWork.Region.RemoveAsync(regionDomain);
+            _unitOfWork.Save();
             return Ok();
         }
     }

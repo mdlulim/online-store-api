@@ -8,10 +8,14 @@ namespace DotNetCore.API.Repositories
     {
         private readonly OnlineStoreDbContext _dbContext;
         public IRegionRepository Region { get; private set; }
+        public ICategoryRepository Category { get; private set; }
+        public IProductRepository Product { get; private set; }
         public UnitOfWork(OnlineStoreDbContext dbContext)
         {
             _dbContext = dbContext;
             Region = new RegionRepository(dbContext);
+            Category = new CategoryRepository(dbContext);
+            Product = new ProductRepository(dbContext);
         }
 
         public void Save()

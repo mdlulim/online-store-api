@@ -1,6 +1,6 @@
-﻿namespace DotNetCore.API.Models.Domain
+﻿namespace DotNetCore.API.Models.DTOs
 {
-    public class Category
+    public class CategoryDTO
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

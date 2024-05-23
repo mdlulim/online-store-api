@@ -1,4 +1,5 @@
-﻿using DotNetCore.API.Data;
+﻿using AutoMapper;
+using DotNetCore.API.Data;
 using DotNetCore.API.Models.Domain;
 using DotNetCore.API.Models.DTOs;
 using DotNetCore.API.Repositories.IRepository;
@@ -12,29 +13,18 @@ namespace DotNetCore.API.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
-        public CategoriesController(IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+        public CategoriesController(IUnitOfWork unitOfWork, IMapper mapper)
         {
              _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var categoeriesDomain = (List<Category>)await _unitOfWork.Category.GetAllAsync();
-
-            var categoeriesDto = new List<CategoryDTO>();
-            foreach (var categoryDomain in categoeriesDomain)
-            {
-                categoeriesDto.Add(new CategoryDTO()
-                {
-                    Id = categoryDomain.Id,
-                    Name = categoryDomain.Name,
-                    Description = categoryDomain.Description,
-                    CreatedDate = categoryDomain.CreatedDate,
-                    UpdatedDate = categoryDomain.UpdatedDate,
-                });
-            }
-
+            var categoeriesDto = _mapper.Map<List<CategoryDTO>>(categoeriesDomain);
             return Ok(categoeriesDto);
         }
 
@@ -43,21 +33,12 @@ namespace DotNetCore.API.Controllers
         public async Task<IActionResult> GetById([FromRoute] Guid Id)
         {
             var categoryDomain = await _unitOfWork.Category.GetAsync(u => u.Id == Id);
-
             if (categoryDomain == null)
             {
                 return NotFound();
             }
 
-            var categoryDto = new CategoryDTO
-            {
-                Id = categoryDomain.Id,
-                Name = categoryDomain.Name,
-                Description = categoryDomain.Description,
-                CreatedDate = categoryDomain.CreatedDate,
-                UpdatedDate = categoryDomain.UpdatedDate,
-            };
-
+            var categoryDto = _mapper.Map<CategoryDTO>(categoryDomain);
             return Ok(categoryDto);
         }
 
@@ -69,26 +50,14 @@ namespace DotNetCore.API.Controllers
 
             DateTime utcNow = DateTime.UtcNow;
             DateTime saNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, saZone);
+            addCategoryRequest.UpdatedDate = saNow;
 
-            var categoryDomain = new Category()
-            {
-                Name = addCategoryRequest.Name,
-                Description = addCategoryRequest.Description,
-                CreatedDate = saNow,
-                UpdatedDate = saNow,
-            };
+            var categoryDomain = _mapper.Map<Category>(addCategoryRequest);
 
             await _unitOfWork.Category.AddAsync(categoryDomain);
             _unitOfWork.Save();
 
-            var categoryDto = new CategoryDTO
-            {
-                Id = categoryDomain.Id,
-                Name = categoryDomain.Name,
-                Description = categoryDomain.Description,
-                CreatedDate = categoryDomain.CreatedDate,
-                UpdatedDate = categoryDomain.UpdatedDate,
-            };
+            var categoryDto = _mapper.Map<CategoryDTO>(categoryDomain);
             return CreatedAtAction(nameof(GetById), new { Id = categoryDto.Id }, categoryDto);
         }
 
@@ -101,6 +70,7 @@ namespace DotNetCore.API.Controllers
 
             DateTime utcNow = DateTime.UtcNow;
             DateTime saNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, saZone);
+            updateCategoryRequest.UpdatedDate = saNow;
 
             var categoryDomain = await _unitOfWork.Category.GetAsync(u => u.Id == Id);
             if (categoryDomain == null)
@@ -108,21 +78,12 @@ namespace DotNetCore.API.Controllers
                 return NotFound();
             }
 
-            categoryDomain.Name = updateCategoryRequest.Name;
-            categoryDomain.Description = updateCategoryRequest.Description;
-            categoryDomain.UpdatedDate = saNow;
+            categoryDomain = _mapper.Map<Category>(updateCategoryRequest);
 
             _unitOfWork.Category.Update(categoryDomain);
             _unitOfWork.Save();
 
-            var categoryDto = new CategoryDTO
-            {
-                Id = categoryDomain.Id,
-                Name = categoryDomain.Name,
-                Description = categoryDomain.Description,
-                CreatedDate = categoryDomain.CreatedDate,
-                UpdatedDate = categoryDomain.UpdatedDate,
-            };
+            var categoryDto = _mapper.Map<CategoryDTO>(categoryDomain);
             return Ok(categoryDto);
         }
 

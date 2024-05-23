@@ -1,4 +1,5 @@
-﻿using DotNetCore.API.Data;
+﻿using AutoMapper;
+using DotNetCore.API.Data;
 using DotNetCore.API.Models.Domain;
 using DotNetCore.API.Models.DTOs;
 using DotNetCore.API.Repositories;
@@ -15,31 +16,19 @@ namespace DotNetCore.API.Controllers
     {
         private readonly  OnlineStoreDbContext _dbContext;
         private readonly IUnitOfWork _unitOfWork;
-        public RegionsController(OnlineStoreDbContext dbContext, IUnitOfWork unitOfWork) 
+        private readonly IMapper _mapper;
+        public RegionsController(OnlineStoreDbContext dbContext, IUnitOfWork unitOfWork, IMapper mapper) 
         { 
             _dbContext = dbContext;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var regionsDomain = (List<Region>) await _unitOfWork.Region.GetAllAsync();
-
-            var regionsDto = new List<RegionDTO>();
-            foreach( var regionDomain in regionsDomain)
-            {
-                regionsDto.Add(new RegionDTO()
-                {
-                    Id = regionDomain.Id,
-                    Name = regionDomain.Name,
-                    Code = regionDomain.Code,
-                    Description = regionDomain.Description,
-                    CreatedDate = regionDomain.CreatedDate,
-                    UpdatedDate = regionDomain.UpdatedDate,
-                });
-            }
-
+            var regionsDto = _mapper.Map<List<RegionDTO>>(regionsDomain);
             return Ok(regionsDto);
         }
 
@@ -47,22 +36,12 @@ namespace DotNetCore.API.Controllers
         [Route("{Id:Guid}")]
         public async Task<IActionResult> GetById([FromRoute] Guid Id) {
             var regionDomain = await _unitOfWork.Region.GetAsync(u => u.Id == Id);
-
             if(regionDomain == null)
             {
                 return NotFound();
             }
 
-            var regionDto = new RegionDTO
-            {
-                Id = regionDomain.Id,
-                Name = regionDomain.Name,
-                Code = regionDomain.Code,
-                Description = regionDomain.Description,
-                CreatedDate = regionDomain.CreatedDate,
-                UpdatedDate = regionDomain.UpdatedDate,
-            };
-
+            var regionDto = _mapper.Map<RegionDTO>(regionDomain);
             return Ok(regionDto);
         }
 
@@ -74,28 +53,14 @@ namespace DotNetCore.API.Controllers
 
             DateTime utcNow = DateTime.UtcNow;
             DateTime saNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, saZone);
+            addRegionRequest.CreatedDate = saNow;
+            addRegionRequest.UpdatedDate = saNow;
+            var regionDomain = _mapper.Map<Region>(addRegionRequest);
 
-            var regionDomain = new Region()
-            {
-                Name = addRegionRequest.Name,
-                Code = addRegionRequest.Code,
-                Description = addRegionRequest.Description,
-                CreatedDate = saNow,
-                UpdatedDate = saNow,
-            };
+            await _unitOfWork.Region.AddAsync(regionDomain);
+             _unitOfWork.Save();
 
-           await _unitOfWork.Region.AddAsync(regionDomain);
-           _unitOfWork.Save();
-
-            var regionDto = new RegionDTO
-            {
-                Id = regionDomain.Id,
-                Name = regionDomain.Name,
-                Code = regionDomain.Code,
-                Description = regionDomain.Description,
-                CreatedDate = regionDomain.CreatedDate,
-                UpdatedDate = regionDomain.UpdatedDate,
-            };
+            var regionDto = _mapper.Map<RegionDTO>(regionDomain);
             return CreatedAtAction(nameof(GetById), new {Id = regionDto.Id}, regionDto);
         }
 
@@ -108,6 +73,7 @@ namespace DotNetCore.API.Controllers
 
             DateTime utcNow = DateTime.UtcNow;
             DateTime saNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, saZone);
+            updateRegionRequest.UpdatedDate = saNow;
 
             var regionDomain = await _unitOfWork.Region.GetAsync(u => u.Id == Id);
             if(regionDomain == null)
@@ -115,23 +81,11 @@ namespace DotNetCore.API.Controllers
                 return NotFound();  
             }
 
-            regionDomain.Name = updateRegionRequest.Name;
-            regionDomain.Code = updateRegionRequest.Code;
-            regionDomain.Description = updateRegionRequest.Description;
-            regionDomain.UpdatedDate = saNow;
-
+            regionDomain = _mapper.Map<Region>(updateRegionRequest);
             _unitOfWork.Region.Update(regionDomain);
             _unitOfWork.Save();
 
-            var regionDto = new RegionDTO
-            {
-                Id = regionDomain.Id,
-                Name = regionDomain.Name,
-                Code = regionDomain.Code,
-                Description = regionDomain.Description,
-                CreatedDate = regionDomain.CreatedDate,
-                UpdatedDate = regionDomain.UpdatedDate,
-            };
+            var regionDto = _mapper.Map<RegionDTO>(regionDomain);
             return Ok(regionDto);
         }
 
@@ -144,7 +98,6 @@ namespace DotNetCore.API.Controllers
             {
                 return NotFound();
             }
-
             await _unitOfWork.Region.RemoveAsync(regionDomain);
             _unitOfWork.Save();
             return Ok();

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DotNetCore.API.CustomActionFilters;
 using DotNetCore.API.Data;
 using DotNetCore.API.Models.Domain;
 using DotNetCore.API.Models.DTOs;
@@ -43,6 +44,7 @@ namespace DotNetCore.API.Controllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Create([FromBody] AddCategoryRequestDto addCategoryRequest)
         {
             TimeZoneInfo utcZone = TimeZoneInfo.Utc;
@@ -50,10 +52,10 @@ namespace DotNetCore.API.Controllers
 
             DateTime utcNow = DateTime.UtcNow;
             DateTime saNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, saZone);
-            addCategoryRequest.UpdatedDate = saNow;
-
+            
             var categoryDomain = _mapper.Map<Category>(addCategoryRequest);
-
+            categoryDomain.CreatedDate = saNow;
+            categoryDomain.UpdatedDate = saNow;
             await _unitOfWork.Category.AddAsync(categoryDomain);
             _unitOfWork.Save();
 
@@ -63,6 +65,7 @@ namespace DotNetCore.API.Controllers
 
         [HttpPut]
         [Route("{Id:Guid}")]
+        [ValidateModel]
         public async Task<IActionResult> Update([FromRoute] Guid Id, [FromBody] UpdateCategoryRequestDto updateCategoryRequest)
         {
             TimeZoneInfo utcZone = TimeZoneInfo.Utc;
@@ -70,8 +73,7 @@ namespace DotNetCore.API.Controllers
 
             DateTime utcNow = DateTime.UtcNow;
             DateTime saNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, saZone);
-            updateCategoryRequest.UpdatedDate = saNow;
-
+           
             var categoryDomain = await _unitOfWork.Category.GetAsync(u => u.Id == Id);
             if (categoryDomain == null)
             {
@@ -79,7 +81,8 @@ namespace DotNetCore.API.Controllers
             }
 
             categoryDomain = _mapper.Map<Category>(updateCategoryRequest);
-
+            categoryDomain.Id = Id;
+            categoryDomain.UpdatedDate = saNow;
             _unitOfWork.Category.Update(categoryDomain);
             _unitOfWork.Save();
 

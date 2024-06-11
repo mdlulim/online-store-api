@@ -1,9 +1,9 @@
-﻿
+﻿using DotNetCore.API.Models.Domain;
 using System.ComponentModel.DataAnnotations;
 
 namespace DotNetCore.API.Models.DTOs
 {
-    public class AddRegionRequestDto
+    public class UpdateProductRequestDto
     {
         [Required]
         [MinLength(2, ErrorMessage = "Code has to be a minimum of 2 characters")]
@@ -14,5 +14,15 @@ namespace DotNetCore.API.Models.DTOs
         [MaxLength(50, ErrorMessage = "Code has to be a maximum of 50 characters")]
         public string Name { get; set; }
         public string? Description { get; set; }
+        public Guid? SupplierId { get; set; }
+        [Required]
+        public decimal CostPrice { get; set; }
+        [Required]
+        public decimal SalePrice { get; set; }
+        [Required]
+        public int IsActive { get; set; }
+        [Required]
+        public Guid CategoryId { get; set; }
+        public string? ImageUrl { get; set; }
     }
 }

@@ -15,6 +15,7 @@ namespace DotNetCore.API.Data
         public DbSet<Region> Regions { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Supplier> Suppiers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,6 +31,18 @@ namespace DotNetCore.API.Data
                     new Region { Id = Guid.NewGuid(), Name = "North West", Code = "NW", Description = "North West", CreatedDate = DateTime.UtcNow, UpdatedDate = DateTime.UtcNow },
                     new Region { Id = Guid.NewGuid(), Name = "Northern Cape", Code = "NC", Description = "Northern Cape", CreatedDate = DateTime.UtcNow, UpdatedDate = DateTime.UtcNow },
                     new Region { Id = Guid.NewGuid(), Name = "Western Cape", Code = "WC", Description = "Western Cape", CreatedDate = DateTime.UtcNow, UpdatedDate = DateTime.UtcNow }
+                );
+
+            modelBuilder.Entity<Supplier>().HasData(
+                 new Supplier
+                 {
+                     Id = Guid.NewGuid(),
+                     VendorCode = "TPC",
+                     Name = "The Prepaid Company",
+                     IsActive = 1,
+                     CreatedDate = DateTime.UtcNow,
+                     UpdatedDate = DateTime.UtcNow
+                 }
                 );
         }
     }

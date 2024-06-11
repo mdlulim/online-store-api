@@ -10,12 +10,15 @@ namespace DotNetCore.API.Mappings
         { 
             CreateMap<Region, RegionDTO>().ReverseMap();
             CreateMap<Category, CategoryDTO>().ReverseMap();
+            CreateMap<Product, ProductDTO>().ReverseMap();
 
             CreateMap<AddRegionRequestDto, Region>().ReverseMap();
             CreateMap<AddCategoryRequestDto, Category>().ReverseMap();
+            CreateMap<AddProductRequestDto, Product>().ReverseMap();
 
             CreateMap<UpdateRegionRequestDto, Region>().ReverseMap();
             CreateMap<UpdateCategoryRequestDto, Category>().ReverseMap();
+            CreateMap<UpdateProductRequestDto, Product>().ReverseMap();
         }
     }
 }

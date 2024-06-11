@@ -5,6 +5,7 @@
         IRegionRepository Region { get; }
         IProductRepository Product { get; }
         ICategoryRepository Category { get; }
+        ISupplierRepository Supplier { get; }
         void Save();
     }
 }

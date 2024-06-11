@@ -22,12 +22,16 @@ namespace DotNetCore.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] string? filterOn = null, [FromQuery] string? filterQuery = null, [FromQuery] string? sortBy = null, [FromQuery] bool? isAscending = null)
+        //Get Products
+        // GET: /api/products?filterOn=Name&filterQuery=Phone&sortBy=Name&isAscending=true&pageNumber=1&pageSize=10
+        public async Task<IActionResult> GetAll([FromQuery] string? filterOn = null, [FromQuery] string? filterQuery = null, 
+            [FromQuery] string? sortBy = null, [FromQuery] bool? isAscending = null, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize=1000)
         {
             try
             {
                 var includeProperties = "Supplier,Category";
-                var productsDomain = await _unitOfWork.Product.GetAllAsync(includeProperties: includeProperties, filterOn: filterOn, filterQuery: filterQuery, sortBy: sortBy, isAscending: isAscending ?? true);
+                var productsDomain = await _unitOfWork.Product.GetAllAsync(includeProperties: includeProperties, filterOn: filterOn, filterQuery: filterQuery, 
+                    sortBy: sortBy, isAscending: isAscending ?? true, pageNumber: pageNumber, pageSize: pageSize);
                 var productsDto = _mapper.Map<List<ProductDTO>>(productsDomain);
                 return Ok(productsDto);
             }

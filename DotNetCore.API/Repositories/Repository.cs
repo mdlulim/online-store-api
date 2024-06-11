@@ -1,5 +1,6 @@
 ﻿using DotNetCore.API.Data;
 using DotNetCore.API.Repositories.IRepository;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ namespace DotNetCore.API.Repositories
         }
 
     public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, string? filterOn = null, 
-            string? filterQuery = null, string? sortBy = null, bool isAscending = true)
+            string? filterQuery = null, string? sortBy = null, bool isAscending = true, int pageNumber = 1, int pageSize = 1000)
         {
             IQueryable<T> query = dbSet;
             
@@ -62,7 +63,10 @@ namespace DotNetCore.API.Repositories
             query = ApplyFiltering(query, filterOn, filterQuery);
             query = ApplySorting(query, sortBy, isAscending);
 
-            return await query.ToListAsync();
+            //Pagination
+            var skipResults = (pageNumber - 1) * pageSize;
+
+            return await query.Skip(skipResults).Take(pageSize).ToListAsync();
         }
 
 

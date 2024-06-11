@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DotNetCore.API.CustomActionFilters;
 using DotNetCore.API.Data;
 using DotNetCore.API.Models.Domain;
 using DotNetCore.API.Models.DTOs;
@@ -14,12 +15,10 @@ namespace DotNetCore.API.Controllers
     [ApiController]
     public class RegionsController : ControllerBase
     {
-        private readonly  OnlineStoreDbContext _dbContext;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public RegionsController(OnlineStoreDbContext dbContext, IUnitOfWork unitOfWork, IMapper mapper) 
+        public RegionsController(IUnitOfWork unitOfWork, IMapper mapper) 
         { 
-            _dbContext = dbContext;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
@@ -46,6 +45,7 @@ namespace DotNetCore.API.Controllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Create([FromBody] AddRegionRequestDto addRegionRequest)
         {
             TimeZoneInfo utcZone = TimeZoneInfo.Utc;
@@ -53,10 +53,10 @@ namespace DotNetCore.API.Controllers
 
             DateTime utcNow = DateTime.UtcNow;
             DateTime saNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, saZone);
-            addRegionRequest.CreatedDate = saNow;
-            addRegionRequest.UpdatedDate = saNow;
-            var regionDomain = _mapper.Map<Region>(addRegionRequest);
 
+            var regionDomain = _mapper.Map<Region>(addRegionRequest);
+            regionDomain.CreatedDate = saNow;
+            regionDomain.UpdatedDate = saNow;
             await _unitOfWork.Region.AddAsync(regionDomain);
              _unitOfWork.Save();
 
@@ -66,6 +66,7 @@ namespace DotNetCore.API.Controllers
 
         [HttpPut]
         [Route("{Id:Guid}")]
+        [ValidateModel]
         public async Task<IActionResult> Update([FromRoute] Guid Id, [FromBody] UpdateRegionRequestDto updateRegionRequest)
         {
             TimeZoneInfo utcZone = TimeZoneInfo.Utc;
@@ -73,8 +74,6 @@ namespace DotNetCore.API.Controllers
 
             DateTime utcNow = DateTime.UtcNow;
             DateTime saNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, saZone);
-            updateRegionRequest.UpdatedDate = saNow;
-
             var regionDomain = await _unitOfWork.Region.GetAsync(u => u.Id == Id);
             if(regionDomain == null)
             {
@@ -82,6 +81,8 @@ namespace DotNetCore.API.Controllers
             }
 
             regionDomain = _mapper.Map<Region>(updateRegionRequest);
+            regionDomain.Id = Id;
+            regionDomain.UpdatedDate = saNow;
             _unitOfWork.Region.Update(regionDomain);
             _unitOfWork.Save();
 

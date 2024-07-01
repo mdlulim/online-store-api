@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DotNetCore.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("v1/[controller]")]
     [ApiController]
     public class RegionsController : ControllerBase
     {

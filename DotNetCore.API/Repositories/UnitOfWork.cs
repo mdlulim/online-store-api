@@ -11,6 +11,7 @@ namespace DotNetCore.API.Repositories
         public ICategoryRepository Category { get; private set; }
         public IProductRepository Product { get; private set; }
         public ISupplierRepository Supplier { get; private set; }
+        public IImageRepository Image { get; private set; }
         public UnitOfWork(OnlineStoreDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -18,6 +19,7 @@ namespace DotNetCore.API.Repositories
             Category = new CategoryRepository(dbContext);
             Product = new ProductRepository(dbContext);
             Supplier = new SupplierRepository(dbContext);
+            Image = new ImageRepository(dbContext);
         }
 
         public void Save()

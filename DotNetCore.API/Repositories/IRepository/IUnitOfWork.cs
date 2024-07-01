@@ -6,6 +6,7 @@
         IProductRepository Product { get; }
         ICategoryRepository Category { get; }
         ISupplierRepository Supplier { get; }
+        IImageRepository Image { get; }
         void Save();
     }
 }

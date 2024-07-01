@@ -14,7 +14,7 @@ namespace DotNetCore.API.Repositories
 
         public void Update(Supplier supplier)
         {
-            _dbContext.Suppiers.Update(supplier);
+            _dbContext.Suppliers.Update(supplier);
         }
     }
 }

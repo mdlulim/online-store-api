@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace DotNetCore.API.Migrations.AuthOnlineStoreDb
+namespace DotNetCore.API.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateDatabase : Migration
+    public partial class AddInitailMigrationAndAuthDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -50,6 +50,53 @@ namespace DotNetCore.API.Migrations.AuthOnlineStoreDb
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Regions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Regions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Suppliers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    VendorCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Suppliers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -158,14 +205,69 @@ namespace DotNetCore.API.Migrations.AuthOnlineStoreDb
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CostPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    SalePrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    IsActive = table.Column<int>(type: "int", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Products_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Products_Suppliers_SupplierId",
+                        column: x => x.SupplierId,
+                        principalTable: "Suppliers",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
                     { "750e7ce2-3675-41bb-9887-b687654d3e5e", "750e7ce2-3675-41bb-9887-b687654d3e5e", "Admin", "ADMIN" },
-                    { "8a82e768-3f75-4e30-83c5-d53f79880d4f", "8a82e768-3f75-4e30-83c5-d53f79880d4f", "Customer", "CUSTOMER" }
+                    { "8a82e768-3f75-4e30-83c5-d53f79880d4f", "8a82e768-3f75-4e30-83c5-d53f79880d4f", "Employee", "EMPLOYEE" },
+                    { "8a9d5120-54e8-46ee-8ed8-9e72712e6920", "8a9d5120-54e8-46ee-8ed8-9e72712e6920", "Customer", "CUSTOMER" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Regions",
+                columns: new[] { "Id", "Code", "CreatedDate", "Description", "Name", "UpdatedDate" },
+                values: new object[,]
+                {
+                    { new Guid("a083a8da-d9a1-4c2d-85e2-f6d1234a56b0"), "KZN", new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5285), "KwaZulu-Natal", "KwaZulu-Natal", new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5285) },
+                    { new Guid("a083a8da-d9a1-4c2d-85e2-f6d1234a56b1"), "EC", new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5287), "Eastern Cape", "Eastern Cape", new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5287) },
+                    { new Guid("a083a8da-d9a1-4c2d-85e2-f6d1234a56b2"), "FS", new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5288), "Free State", "Free State", new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5288) },
+                    { new Guid("a083a8da-d9a1-4c2d-85e2-f6d1234a56b3"), "LP", new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5289), "Limpopo", "Limpopo", new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5290) },
+                    { new Guid("a083a8da-d9a1-4c2d-85e2-f6d1234a56b4"), "MP", new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5291), "Mpumalanga", "Mpumalanga", new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5291) },
+                    { new Guid("a083a8da-d9a1-4c2d-85e2-f6d1234a56b5"), "NW", new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5292), "North West", "North West", new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5292) },
+                    { new Guid("a083a8da-d9a1-4c2d-85e2-f6d1234a56b6"), "NC", new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5294), "Northern Cape", "Northern Cape", new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5294) },
+                    { new Guid("a083a8da-d9a1-4c2d-85e2-f6d1234a56b7"), "WC", new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5295), "Western Cape", "Western Cape", new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5295) },
+                    { new Guid("f3604540-6c24-4959-ae2e-8047b7d9f1fb"), "GP", new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5281), "Gauteng Province", "Gauteng", new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5283) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Suppliers",
+                columns: new[] { "Id", "CreatedDate", "IsActive", "Name", "UpdatedDate", "VendorCode" },
+                values: new object[] { new Guid("a3a5f2d4-8e92-46c8-9232-f8de57f2c2af"), new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5316), 1, "The Prepaid Company", new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5316), "TPC" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -205,6 +307,16 @@ namespace DotNetCore.API.Migrations.AuthOnlineStoreDb
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_CategoryId",
+                table: "Products",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_SupplierId",
+                table: "Products",
+                column: "SupplierId");
         }
 
         /// <inheritdoc />
@@ -226,10 +338,22 @@ namespace DotNetCore.API.Migrations.AuthOnlineStoreDb
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Regions");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Suppliers");
         }
     }
 }

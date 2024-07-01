@@ -10,9 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DotNetCore.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("v1/admin/[controller]")]
     [ApiController]
-    [Authorize]
     public class ProductsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -24,6 +23,7 @@ namespace DotNetCore.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Customer")]
         //Get Products
         // GET: /api/products?filterOn=Name&filterQuery=Phone&sortBy=Name&isAscending=true&pageNumber=1&pageSize=10
         public async Task<IActionResult> GetAll([FromQuery] string? filterOn = null, [FromQuery] string? filterQuery = null, 
@@ -46,6 +46,7 @@ namespace DotNetCore.API.Controllers
 
         [HttpGet]
         [Route("{Id:Guid}")]
+        [Authorize(Roles = "Admin, Customer")]
         public async Task<IActionResult> GetById([FromRoute] Guid Id)
         {
             var productDomain = await _unitOfWork.Product.GetAsync(u => u.Id == Id, includeProperties: "Supplier,Category");
@@ -60,6 +61,7 @@ namespace DotNetCore.API.Controllers
 
         [HttpPost]
         [ValidateModel]
+        [Authorize(Roles = "Admin, Customer")]
         public async Task<IActionResult> Create([FromBody] AddProductRequestDto addProductRequest)
         {
             TimeZoneInfo utcZone = TimeZoneInfo.Utc;
@@ -81,6 +83,7 @@ namespace DotNetCore.API.Controllers
         [HttpPut]
         [Route("{Id:Guid}")]
         [ValidateModel]
+        [Authorize(Roles = "Admin, Customer")]
         public async Task<IActionResult> Update([FromRoute] Guid Id, [FromBody] UpdateProductRequestDto updateProductRequest)
         {
             TimeZoneInfo utcZone = TimeZoneInfo.Utc;
@@ -107,6 +110,7 @@ namespace DotNetCore.API.Controllers
 
         [HttpDelete]
         [Route("{Id:Guid}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete([FromRoute] Guid Id)
         {
             var productDomain = await _unitOfWork.Product.GetAsync(u => u.Id == Id);

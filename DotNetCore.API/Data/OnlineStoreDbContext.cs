@@ -1,14 +1,16 @@
 ﻿using DotNetCore.API.Models.Domain;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
+using System.Reflection.Emit;
 
 namespace DotNetCore.API.Data
 {
-    public class OnlineStoreDbContext : DbContext
+    public class OnlineStoreDbContext : IdentityDbContext
     {
-        // Creating a constructor
         public OnlineStoreDbContext(DbContextOptions<OnlineStoreDbContext> options) : base(options)
         {
+
         }
 
         // DbSet is the property of the db class that represents the collection of entities in the database
@@ -16,10 +18,21 @@ namespace DotNetCore.API.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            var roles = new List<IdentityRole>
+            {
+                
+            };
+
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole { Id = "750e7ce2-3675-41bb-9887-b687654d3e5e", ConcurrencyStamp = "750e7ce2-3675-41bb-9887-b687654d3e5e", Name = "Admin", NormalizedName = "Admin".ToUpper() },
+                new IdentityRole { Id = "8a82e768-3f75-4e30-83c5-d53f79880d4f", ConcurrencyStamp = "8a82e768-3f75-4e30-83c5-d53f79880d4f", Name = "Employee", NormalizedName = "Employee".ToUpper() },
+                new IdentityRole { Id = "8a9d5120-54e8-46ee-8ed8-9e72712e6920", ConcurrencyStamp = "8a9d5120-54e8-46ee-8ed8-9e72712e6920", Name = "Customer", NormalizedName = "Customer".ToUpper() }
+            );
 
             modelBuilder.Entity<Region>().HasData(
                 new Region { Id = Guid.Parse("f3604540-6c24-4959-ae2e-8047b7d9f1fb"), Name = "Gauteng", Code = "GP", Description = "Gauteng Province", CreatedDate = DateTime.UtcNow, UpdatedDate = DateTime.UtcNow },

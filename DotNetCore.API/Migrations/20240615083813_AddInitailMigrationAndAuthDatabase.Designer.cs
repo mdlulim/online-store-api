@@ -4,6 +4,7 @@ using DotNetCore.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotNetCore.API.Migrations
 {
     [DbContext(typeof(OnlineStoreDbContext))]
-    partial class OnlineStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240615083813_AddInitailMigrationAndAuthDatabase")]
+    partial class AddInitailMigrationAndAuthDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,36 +47,6 @@ namespace DotNetCore.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("DotNetCore.API.Models.Domain.Image", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("FileDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FileExtemsion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("FileSizeInBytes")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("DotNetCore.API.Models.Domain.Product", b =>
@@ -158,82 +131,82 @@ namespace DotNetCore.API.Migrations
                         {
                             Id = new Guid("f3604540-6c24-4959-ae2e-8047b7d9f1fb"),
                             Code = "GP",
-                            CreatedDate = new DateTime(2024, 6, 15, 11, 42, 26, 184, DateTimeKind.Utc).AddTicks(3188),
+                            CreatedDate = new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5281),
                             Description = "Gauteng Province",
                             Name = "Gauteng",
-                            UpdatedDate = new DateTime(2024, 6, 15, 11, 42, 26, 184, DateTimeKind.Utc).AddTicks(3189)
+                            UpdatedDate = new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5283)
                         },
                         new
                         {
                             Id = new Guid("a083a8da-d9a1-4c2d-85e2-f6d1234a56b0"),
                             Code = "KZN",
-                            CreatedDate = new DateTime(2024, 6, 15, 11, 42, 26, 184, DateTimeKind.Utc).AddTicks(3191),
+                            CreatedDate = new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5285),
                             Description = "KwaZulu-Natal",
                             Name = "KwaZulu-Natal",
-                            UpdatedDate = new DateTime(2024, 6, 15, 11, 42, 26, 184, DateTimeKind.Utc).AddTicks(3191)
+                            UpdatedDate = new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5285)
                         },
                         new
                         {
                             Id = new Guid("a083a8da-d9a1-4c2d-85e2-f6d1234a56b1"),
                             Code = "EC",
-                            CreatedDate = new DateTime(2024, 6, 15, 11, 42, 26, 184, DateTimeKind.Utc).AddTicks(3193),
+                            CreatedDate = new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5287),
                             Description = "Eastern Cape",
                             Name = "Eastern Cape",
-                            UpdatedDate = new DateTime(2024, 6, 15, 11, 42, 26, 184, DateTimeKind.Utc).AddTicks(3193)
+                            UpdatedDate = new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5287)
                         },
                         new
                         {
                             Id = new Guid("a083a8da-d9a1-4c2d-85e2-f6d1234a56b2"),
                             Code = "FS",
-                            CreatedDate = new DateTime(2024, 6, 15, 11, 42, 26, 184, DateTimeKind.Utc).AddTicks(3194),
+                            CreatedDate = new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5288),
                             Description = "Free State",
                             Name = "Free State",
-                            UpdatedDate = new DateTime(2024, 6, 15, 11, 42, 26, 184, DateTimeKind.Utc).AddTicks(3194)
+                            UpdatedDate = new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5288)
                         },
                         new
                         {
                             Id = new Guid("a083a8da-d9a1-4c2d-85e2-f6d1234a56b3"),
                             Code = "LP",
-                            CreatedDate = new DateTime(2024, 6, 15, 11, 42, 26, 184, DateTimeKind.Utc).AddTicks(3195),
+                            CreatedDate = new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5289),
                             Description = "Limpopo",
                             Name = "Limpopo",
-                            UpdatedDate = new DateTime(2024, 6, 15, 11, 42, 26, 184, DateTimeKind.Utc).AddTicks(3196)
+                            UpdatedDate = new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5290)
                         },
                         new
                         {
                             Id = new Guid("a083a8da-d9a1-4c2d-85e2-f6d1234a56b4"),
                             Code = "MP",
-                            CreatedDate = new DateTime(2024, 6, 15, 11, 42, 26, 184, DateTimeKind.Utc).AddTicks(3197),
+                            CreatedDate = new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5291),
                             Description = "Mpumalanga",
                             Name = "Mpumalanga",
-                            UpdatedDate = new DateTime(2024, 6, 15, 11, 42, 26, 184, DateTimeKind.Utc).AddTicks(3197)
+                            UpdatedDate = new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5291)
                         },
                         new
                         {
                             Id = new Guid("a083a8da-d9a1-4c2d-85e2-f6d1234a56b5"),
                             Code = "NW",
-                            CreatedDate = new DateTime(2024, 6, 15, 11, 42, 26, 184, DateTimeKind.Utc).AddTicks(3198),
+                            CreatedDate = new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5292),
                             Description = "North West",
                             Name = "North West",
-                            UpdatedDate = new DateTime(2024, 6, 15, 11, 42, 26, 184, DateTimeKind.Utc).AddTicks(3198)
+                            UpdatedDate = new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5292)
                         },
                         new
                         {
                             Id = new Guid("a083a8da-d9a1-4c2d-85e2-f6d1234a56b6"),
                             Code = "NC",
-                            CreatedDate = new DateTime(2024, 6, 15, 11, 42, 26, 184, DateTimeKind.Utc).AddTicks(3199),
+                            CreatedDate = new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5294),
                             Description = "Northern Cape",
                             Name = "Northern Cape",
-                            UpdatedDate = new DateTime(2024, 6, 15, 11, 42, 26, 184, DateTimeKind.Utc).AddTicks(3200)
+                            UpdatedDate = new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5294)
                         },
                         new
                         {
                             Id = new Guid("a083a8da-d9a1-4c2d-85e2-f6d1234a56b7"),
                             Code = "WC",
-                            CreatedDate = new DateTime(2024, 6, 15, 11, 42, 26, 184, DateTimeKind.Utc).AddTicks(3201),
+                            CreatedDate = new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5295),
                             Description = "Western Cape",
                             Name = "Western Cape",
-                            UpdatedDate = new DateTime(2024, 6, 15, 11, 42, 26, 184, DateTimeKind.Utc).AddTicks(3201)
+                            UpdatedDate = new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5295)
                         });
                 });
 
@@ -268,10 +241,10 @@ namespace DotNetCore.API.Migrations
                         new
                         {
                             Id = new Guid("a3a5f2d4-8e92-46c8-9232-f8de57f2c2af"),
-                            CreatedDate = new DateTime(2024, 6, 15, 11, 42, 26, 184, DateTimeKind.Utc).AddTicks(3219),
+                            CreatedDate = new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5316),
                             IsActive = 1,
                             Name = "The Prepaid Company",
-                            UpdatedDate = new DateTime(2024, 6, 15, 11, 42, 26, 184, DateTimeKind.Utc).AddTicks(3220),
+                            UpdatedDate = new DateTime(2024, 6, 15, 8, 38, 12, 797, DateTimeKind.Utc).AddTicks(5316),
                             VendorCode = "TPC"
                         });
                 });

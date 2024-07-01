@@ -8,7 +8,7 @@ using DotNetCore.API.Repositories.IRepository;
 
 namespace DotNetCore.API.Controllers
 {
-    [Route("api/admin/[controller]")]
+    [Route("v1/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {

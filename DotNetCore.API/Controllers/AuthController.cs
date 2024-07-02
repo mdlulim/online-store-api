@@ -5,6 +5,7 @@ using DotNetCore.API.Models.DTOs;
 using Microsoft.AspNetCore.Identity;
 using Azure.Identity;
 using DotNetCore.API.Repositories.IRepository;
+using System.Data;
 
 namespace DotNetCore.API.Controllers
 {
@@ -71,11 +72,11 @@ namespace DotNetCore.API.Controllers
                         Roles = roles.ToArray(),
                         JwtToken = jwtToken
                     };
-                    return Ok(response);
+                    return Ok(new ResponseDto { Success = true, Message = "Login successful", Data = response });
                 }
             }
 
-            return BadRequest("Username or password incorrect");
+            return Ok(new ResponseDto { Success = false, Message = "Username or password incorrect", Data = null });
         }
 
     }
